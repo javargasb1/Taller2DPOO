@@ -227,8 +227,13 @@ public class AplicacionHamburguesas
 		if (eleccion == 1)
 		{
 			Elpedido = res.getPedidoEnCurso();
-			String textoFactura = Elpedido.generarTextoFactura();
-			return textoFactura;
+			if (Elpedido != null)
+			{
+				String textoFactura = Elpedido.generarTextoFactura();
+				return textoFactura;
+			}
+			else
+				return ("No hay un pedido en curso");
 		}
 		else 
 		{
