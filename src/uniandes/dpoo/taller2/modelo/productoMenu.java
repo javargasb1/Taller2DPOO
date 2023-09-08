@@ -26,6 +26,6 @@ public class productoMenu implements producto
 	@Override
 	public String generarTextoFactura() 
 	{
-		return (nombre + "   " + Integer.toString(precioBase)) ;
+		return (nombre + "   " + Integer.toString(precioBase) + "\n") ;
 	}
 }

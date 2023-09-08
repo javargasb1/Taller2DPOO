@@ -34,9 +34,9 @@ public class AplicacionHamburguesas
 					ejecutarIniciarAplicacion();
 				else if (opcion_seleccionada == 2 && res != null)
 					ejecutarAgregarElementoPedido();
-				else if (opcion_seleccionada == 3 && res != null)
+				else if (opcion_seleccionada == 3)
 					EjecutaCerrarPedido();
-				else if (opcion_seleccionada == 4 && res != null)
+				else if (opcion_seleccionada == 4)
 				{
 					String textoFactura = EjecutarConsultaPedido();
 					System.out.println(textoFactura);
@@ -84,72 +84,104 @@ public class AplicacionHamburguesas
 		
 		res = loaderRestaurante.cargarInformacionRestaurante(archivoIngredientes,archivoMenu,archivoCombos);
 		res.iniciarPedido(nombreCliente,direccionCliente);
+		
+		System.out.println("Pedido empezado con exito...\n");
+		System.out.println("Por favor agregue un elemento al pedido (opcion 2)\n");
 	}
 	private void ejecutarAgregarElementoPedido()
 	{
-		System.out.println("Que elemento desea agregar?\n");
-		System.out.println("1. Combo");
-		System.out.println("2. Producto del Menu");
-		System.out.println("3. Cancelar");
-	
-		int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
-		producto elemento = null;
-		if (opcion_seleccionada == 1)
+		if (res != null)
 		{
-			ArrayList<combo> ListaCombos = mostrarCombos();
 			System.out.println("Que elemento desea agregar?\n");
-			int opcion_combo = Integer.parseInt(input("Por favor seleccione una opción"));
-			elemento = ListaCombos.get(opcion_combo - 1);
-			
-			pedido Elpedido = res.getPedidoEnCurso();
-			Elpedido.agregarProducto(elemento);
-		}
-		else if (opcion_seleccionada == 2)
-		{
-			ArrayList<productoMenu> ListaMenu = mostrarProductoMenu();
-			System.out.println("Que elemento desea agregar?\n");
-			int opcion_menu = Integer.parseInt(input("Por favor seleccione una opción"));
-			productoMenu elemento1 = ListaMenu.get(opcion_menu - 1);
-			
-			System.out.println("Desea agregar o eliminar algun ingrediente?\n");
-			System.out.println("1. Si\n");
-			System.out.println("2. No\n");
-			int opcion_ajustar = Integer.parseInt(input("Por favor seleccione una opción"));
-			
-			if (opcion_ajustar == 1)
-			{
-				boolean continuar = true;
-				boolean continuar2 = false;
-				ArrayList<ingrediente> ListaIngredientesAgregados = new ArrayList<ingrediente>();
-				ArrayList<ingrediente> ListaIngredientesEliminados = new ArrayList<ingrediente>();
+			System.out.println("1. Combo");
+			System.out.println("2. Producto del Menu");
+			System.out.println("3. Cancelar");
+		
+			int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
+			producto elemento = null;
+			if (opcion_seleccionada == 1)
+			{ 
+				ArrayList<combo> ListaCombos = mostrarCombos();
+				int size_lista_combos = ListaCombos.size();
+				System.out.println(Integer.toString(size_lista_combos + 1) + ". Cancelar");
+				System.out.println("Que elemento desea agregar?\n");
+				int opcion_combo = Integer.parseInt(input("Por favor seleccione una opción"));
 				
-				while (continuar)
+				if (opcion_combo <= size_lista_combos)
 				{
-					ArrayList<ingrediente> ListaIngredientes = mostrarIngredientes();
-
-					int size_lista = ListaIngredientes.size();
-					System.out.println(Integer.toString(size_lista + 1) + ". Ninguno");
-					System.out.println("Que elemento desea agregar?\n");
-					int opcion_ingrediente = Integer.parseInt(input("Por favor seleccione una opción"));
-					if (opcion_ingrediente >= size_lista+1)
+					elemento = ListaCombos.get(opcion_combo - 1);
+					pedido Elpedido = res.getPedidoEnCurso();
+					Elpedido.agregarProducto(elemento);
+					System.out.println("Se agrego " + elemento.generarTextoFactura());				}
+				else if(opcion_combo == size_lista_combos + 1)
+				{
+					System.out.println("Accion cancelada...");
+				}
+				else
+				{
+					System.out.println("Opcion no valida, vuelva a intentarlo");
+				}
+			}
+			
+			else if (opcion_seleccionada == 2)
+			{
+				ArrayList<productoMenu> ListaMenu = mostrarProductoMenu();
+				System.out.println("Que elemento desea agregar?\n");
+				int opcion_menu = Integer.parseInt(input("Por favor seleccione una opción"));
+				productoMenu elemento1 = ListaMenu.get(opcion_menu - 1);
+				ArrayList<ingrediente> ListaIngredientesAgregados = null;
+				ArrayList<ingrediente> ListaIngredientesEliminados = null;
+				
+				System.out.println("Desea agregar algun ingrediente?\n");
+				System.out.println("1. Si\n");
+				System.out.println("2. No\n");
+				int opcion_ajustar = Integer.parseInt(input("Por favor seleccione una opción"));
+				
+				if (opcion_ajustar == 1)
+				{  
+					boolean continuar = true;
+					
+					while (continuar)
 					{
-						continuar2 = true;
+						ArrayList<ingrediente> ListaIngredientes = mostrarIngredientes();
+						ListaIngredientesAgregados = new ArrayList<ingrediente>();
+						int size_lista = ListaIngredientes.size();
+						System.out.println(Integer.toString(size_lista + 1) + ". Cancelar");
+						System.out.println("Que elemento desea agregar?\n");
+						int opcion_ingrediente = Integer.parseInt(input("Por favor seleccione una opción"));
+						if (opcion_ingrediente >= size_lista+1)
+						{
+							continuar = false;
+						}
+						else
+						{
+							ingrediente elemento_ingrediente = ListaIngredientes.get(opcion_ingrediente-1);
+							ListaIngredientesAgregados.add(elemento_ingrediente);
+							System.out.println("Se agrego " + elemento_ingrediente.getNombre()+"\n");
+							System.out.println("Desea agregar algo mas? \n");
+						}
 					}
-					else
-					{
-						ingrediente elemento_ingrediente = ListaIngredientes.get(opcion_ingrediente-1);
-						ListaIngredientesAgregados.add(elemento_ingrediente);
-						System.out.println("Se agrego " + elemento_ingrediente.getNombre()+"\n");
-					}
+				}
+				
+				
+				System.out.println("Desea eliminar algun ingrediente?\n");
+				System.out.println("1. Si\n");
+				System.out.println("2. No\n");
+				int opcion_ajustar2 = Integer.parseInt(input("Por favor seleccione una opción"));
+				
+				if (opcion_ajustar2 == 1)
+				{
+					boolean continuar2 = true;
 					while (continuar2)
 					{
-						mostrarIngredientes();
-						System.out.println(Integer.toString(size_lista + 1) + ". Ninguno");
+						ArrayList<ingrediente> ListaIngredientes = mostrarIngredientes();
+						ListaIngredientesEliminados = new ArrayList<ingrediente>();
+						int size_lista = ListaIngredientes.size(); 
+						System.out.println(Integer.toString(size_lista + 1) + ". Cancelar");
 						System.out.println("Que elemento desea eliminar? (no tiene costo)\n");
 						int opcion_ingrediente2 = Integer.parseInt(input("Por favor seleccione una opción"));
 						if (opcion_ingrediente2 >= size_lista+1)
 						{
-							continuar = false;
 							continuar2 = false;
 						}
 						else
@@ -157,23 +189,21 @@ public class AplicacionHamburguesas
 							ingrediente elemento_ingrediente2 = ListaIngredientes.get(opcion_ingrediente2 - 1);
 							ListaIngredientesEliminados.add(elemento_ingrediente2);
 							System.out.println("Se elimino " + elemento_ingrediente2.getNombre()+ "\n");
+							System.out.println("Desea eliminar algun ingrediente mas?\n");
 						}
 					}
-				}
+				}	
 				
 				productoAjustado elemento_ajustado = new productoAjustado(elemento1,ListaIngredientesAgregados,ListaIngredientesEliminados);
 				pedido Elpedido = res.getPedidoEnCurso();
 				Elpedido.agregarProducto(elemento_ajustado);
-			}
-			else
-			{
-				pedido Elpedido = res.getPedidoEnCurso();
-				Elpedido.agregarProducto(elemento1);
-			}
+				System.out.println("Se agrego " + elemento_ajustado.generarTextoFactura() + "\n");
+			}		
 		}
-				
+		else
+			System.out.println("No hay un pedido en curso");
 	}
-	
+		
 	private ArrayList<productoMenu> mostrarProductoMenu() {
 		
 		ArrayList<productoMenu> ListaMenu = res.getMenuBase();
@@ -217,16 +247,23 @@ public class AplicacionHamburguesas
 	
 	private void EjecutaCerrarPedido() throws IOException
 	{
-		res.cerrarYGuardarPedido();
+		if (res != null)
+		{
+			pedido Elpedido = res.getPedidoEnCurso();
+			int idPedido = Elpedido.getIdPedido();
+			res.cerrarYGuardarPedido();
+			System.out.println("Pedido cerrado con exito...\n Id del pedido: " + Integer.toString(idPedido) + "\n");
+		}
+		else
+			System.out.println("No hay ningun pedido en curso\n");
 	}
 	
 	private String EjecutarConsultaPedido()
 	{
 		int eleccion = Integer.parseInt(input("Desea consultar el pedido en curso (1) o uno anterior (2)?"));
-		pedido Elpedido = null;
-		if (eleccion == 1)
+		if (eleccion == 1 && res != null)
 		{
-			Elpedido = res.getPedidoEnCurso();
+			pedido Elpedido = res.getPedidoEnCurso();
 			if (Elpedido != null)
 			{
 				String textoFactura = Elpedido.generarTextoFactura();
@@ -235,10 +272,11 @@ public class AplicacionHamburguesas
 			else
 				return ("No hay un pedido en curso");
 		}
-		else 
+		
+		else if (eleccion == 2 && res != null) 
 		{
 			int idPedido = Integer.parseInt(input("Por favor ingrese ID del pedido: "));
-			Elpedido = res.getPedidoID(idPedido);
+			pedido Elpedido = res.getPedidoID(idPedido);
 			if (Elpedido != null)
 			{
 				String textoFactura = Elpedido.generarTextoFactura();
@@ -247,6 +285,8 @@ public class AplicacionHamburguesas
 			else
 				return ("No se encontró el pedido con ese ID :(");
 		}
+		
+		return "No hay historial de pedidos";
 	}
 	
 	public String input(String mensaje)

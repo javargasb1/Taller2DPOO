@@ -55,7 +55,7 @@ public class pedido
 	}
 	public String generarTextoFactura()
 	{
-		String textoFactura = "Cliente: " + nombreCliente + " Dirección: " + direccionCliente + "\n";
+		String textoFactura = "Cliente: " + nombreCliente + " Dirección: " + direccionCliente + "\n" + "ID del pedido: " + idPedido + "\n";
 		for (producto n_producto: ListaProductos)
 		{
 			String textoProducto = n_producto.generarTextoFactura();

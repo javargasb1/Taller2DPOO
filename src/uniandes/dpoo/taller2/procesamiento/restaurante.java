@@ -36,7 +36,9 @@ public class restaurante
 		String nombreArchivo = "data/" + Integer.toString(Elpedido.getIdPedido()) + ".txt";
 		File archivo = new File(nombreArchivo);
 		Elpedido.guardarFactura(archivo);
+		System.out.println("Factura guardada en: " + nombreArchivo);
 		historialPedidos.add(Elpedido);
+		Elpedido = null;
 	}
 	public pedido getPedidoEnCurso()
 	{
