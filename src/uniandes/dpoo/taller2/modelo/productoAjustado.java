@@ -1,3 +1,4 @@
+
 package uniandes.dpoo.taller2.modelo;
 
 import java.util.ArrayList;
@@ -51,6 +52,6 @@ public class productoAjustado implements producto
 	@Override
 	public String generarTextoFactura() 
 	{
-		return (nombre + "   " + Integer.toString(precioAjustado)) ;
+		return (nombre + "   " + Integer.toString(precioAjustado)+ "\n");
 	}
 }

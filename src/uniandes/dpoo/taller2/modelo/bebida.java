@@ -1,11 +1,11 @@
 package uniandes.dpoo.taller2.modelo;
 
-public class productoMenu implements producto
+public class bebida implements producto
 {
 	private String nombre;
 	private int precioBase;
 	
-	public productoMenu(String nombre, int precioBase)
+	public bebida(String nombre, int precioBase)
 	{
 		this.nombre = nombre;
 		this.precioBase = precioBase;
@@ -26,6 +26,6 @@ public class productoMenu implements producto
 	@Override
 	public String generarTextoFactura() 
 	{
-		return (nombre + "   " + Integer.toString(precioBase) + "\n") ;
+		return (nombre + "   " + Integer.toString(precioBase) + "\n");
 	}
 }

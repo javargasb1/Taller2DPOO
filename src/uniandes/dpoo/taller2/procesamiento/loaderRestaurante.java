@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import uniandes.dpoo.taller2.modelo.bebida;
 import uniandes.dpoo.taller2.modelo.combo;
 import uniandes.dpoo.taller2.modelo.ingrediente;
 import uniandes.dpoo.taller2.modelo.productoMenu;
@@ -15,13 +16,15 @@ public class loaderRestaurante
 	private static ArrayList<ingrediente> ListaIngredientes = null;
 	private static ArrayList<productoMenu> ListaMenu = null;
 	private static ArrayList<combo> ListaCombos = null;
+	private static ArrayList<bebida> ListaBebidas = null;
 	
-	public static restaurante cargarInformacionRestaurante(String archivoIngredientes,String archivoMenu,String archivoCombos) throws FileNotFoundException, IOException
+	public static restaurante cargarInformacionRestaurante(String archivoIngredientes,String archivoMenu,String archivoCombos,String archivoBebidas) throws FileNotFoundException, IOException
 	{
 		cargarIngredientes(archivoIngredientes);
 		cargarMenu(archivoMenu);
 		cargarCombos(archivoCombos);
-		restaurante res = new restaurante(ListaIngredientes,ListaMenu,ListaCombos);
+		cargarBebidas(archivoBebidas);
+		restaurante res = new restaurante(ListaIngredientes,ListaMenu,ListaCombos,ListaBebidas);
 		return res;
 	}	
 	private static  ArrayList<ingrediente> cargarIngredientes(String archivoIngredientes) throws FileNotFoundException, IOException
@@ -62,6 +65,25 @@ public class loaderRestaurante
 		br.close();
 		return ListaMenu;
 	}
+	private static ArrayList<bebida> cargarBebidas(String archivoBebidas)throws FileNotFoundException, IOException
+	{
+		ListaBebidas = new ArrayList<bebida>();
+		
+		BufferedReader br = new BufferedReader(new FileReader(archivoBebidas));
+		String linea = br.readLine();
+		while (linea != null)
+		{
+			String[] partes = linea.split(";");
+			String nombreBebida = partes[0];
+			int costoBase = Integer.parseInt(partes[1]);
+			
+			bebida Labebida = new bebida(nombreBebida,costoBase);
+			ListaBebidas.add(Labebida);
+			linea = br.readLine();
+		}
+		br.close();
+		return ListaBebidas;
+	}	
 	private static ArrayList<combo> cargarCombos(String archivoCombos)throws FileNotFoundException, IOException
 	{
 		ListaCombos = new ArrayList<combo>();

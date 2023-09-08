@@ -30,6 +30,13 @@ public class pedido
 	{
 		ListaProductos.add(nuevoItem);
 	}
+	
+	// Metodo creado para poder comparar los pedidos basandonos en los productos en el pedido.
+	public  ArrayList<producto> getListaProductos()
+	{
+		return ListaProductos;
+	}
+	
 	private int getPrecioNetoPedido()
 	{
 		int precioNeto = 0;
@@ -55,7 +62,7 @@ public class pedido
 	}
 	public String generarTextoFactura()
 	{
-		String textoFactura = "Cliente: " + nombreCliente + " Dirección: " + direccionCliente + "\n";
+		String textoFactura = "Cliente: " + nombreCliente + " Dirección: " + direccionCliente + "\n" + "ID del pedido: " + idPedido + "\n";
 		for (producto n_producto: ListaProductos)
 		{
 			String textoProducto = n_producto.generarTextoFactura();
